@@ -1,0 +1,63 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <name>Yildiz Module Network Netty</name>
+  <description>Module containing the Netty implementation for network.</description>
+
+  <groupId>be.yildiz-games</groupId>
+  <artifactId>module-network-netty</artifactId>
+  <version>1.0.0-0-SNAPSHOT</version>
+
+  <packaging>jar</packaging>
+  <inceptionYear>2014</inceptionYear>
+  <parent>
+    <groupId>be.yildiz-games</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0-0-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <version.bom-junit>1.0.0-0-SNAPSHOT</version.bom-junit>
+    <version.bom-netty>1.0.0-0-SNAPSHOT</version.bom-netty>
+    <version.module-network>1.0.0-0-SNAPSHOT</version.module-network>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>be.yildiz-games</groupId>
+        <artifactId>bom-junit</artifactId>
+        <version>${version.bom-junit}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>be.yildiz-games</groupId>
+        <artifactId>bom-netty</artifactId>
+        <version>${version.bom-netty}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>be.yildiz-games</groupId>
+      <artifactId>module-network</artifactId>
+      <version>${version.module-network}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+    </dependency>
+  </dependencies>
+</project>
