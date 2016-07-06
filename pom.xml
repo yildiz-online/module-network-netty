@@ -10,6 +10,11 @@
 
   <packaging>jar</packaging>
   <inceptionYear>2014</inceptionYear>
+  <scm>
+    <connection>scm:git:https://bitbucket.org/yildiz-engine-team/module-network-netty</connection>
+    <developerConnection>scm:git:https://bitbucket.org/yildiz-engine-team/module-network-netty</developerConnection>
+    <url>https://bitbucket.org/yildiz-engine-team/module-network-netty</url>
+  </scm>
   <parent>
     <groupId>be.yildiz-games</groupId>
     <artifactId>parent</artifactId>
