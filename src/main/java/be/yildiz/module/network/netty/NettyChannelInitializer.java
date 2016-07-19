@@ -113,7 +113,7 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
         /**
          * Transfer using ZLIB compression.
          */
-        ZLIB
+        ZLIB;
     }
 
 
