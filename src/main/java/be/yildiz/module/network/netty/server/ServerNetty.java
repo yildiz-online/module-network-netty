@@ -115,9 +115,9 @@ public final class ServerNetty implements Server {
                 Logger.warning("server not bound to :" + this.port);
             }
         } catch (ChannelException e) {
-            throw new NetworkException("Port " + this.port + " already in use.");
+            throw new NetworkException("Port " + this.port + " already in use.", e);
         } catch (InterruptedException e) {
-            throw new NetworkException("Error starting network engine.");
+            throw new NetworkException("Error starting network engine.", e);
         }
     }
 }
