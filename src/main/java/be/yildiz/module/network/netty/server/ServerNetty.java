@@ -60,20 +60,6 @@ public final class ServerNetty implements Server {
      */
     private final ServerBootstrap bootstrap;
 
-
-    /**
-     * Create a new Netty server.
-     *
-     * @param bootstrap Netty server bootstrap to use.
-     * @param port      Port to expose to clients.
-     * @requires bootstrap != null.
-     * @requires port > 0 < 65535.
-     * @effects Create a new instance of the Netty server.
-     */
-    public ServerNetty(final ServerBootstrap bootstrap, final int port) {
-        this(bootstrap, null, port);
-    }
-
     /**
      * Create a new Netty server.
      *
@@ -84,13 +70,41 @@ public final class ServerNetty implements Server {
      * @requires port > 0 < 65535.
      * @effects Create a new instance of the Netty server.
      */
-    public ServerNetty(final ServerBootstrap bootstrap, final String address, final int port) {
+    private ServerNetty(final ServerBootstrap bootstrap, final String address, final int port) {
         super();
         this.address = address;
         this.port = port;
         this.bootstrap = bootstrap;
         this.bootstrap.option(ChannelOption.TCP_NODELAY, true);
         this.bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+    }
+
+    /**
+     * Create a new Netty server.
+     *
+     * @param bootstrap Netty server bootstrap to use.
+     * @param address   Address to expose to clients.
+     * @param port      Port to expose to clients.
+     * @requires bootstrap != null.
+     * @requires address != null.
+     * @requires port > 0 < 65535.
+     * @effects Create a new instance of the Netty server.
+     */
+    public static ServerNetty fromAddress(final ServerBootstrap bootstrap, final String address, final int port) {
+        return new ServerNetty(bootstrap, address, port);
+    }
+
+    /**
+     * Create a new Netty server.
+     *
+     * @param bootstrap Netty server bootstrap to use.
+     * @param port      Port to expose to clients.
+     * @requires bootstrap != null.
+     * @requires port > 0 < 65535.
+     * @effects Create a new instance of the Netty server.
+     */
+    public static ServerNetty fromPort(final ServerBootstrap bootstrap, final int port) {
+        return new ServerNetty(bootstrap, null, port);
     }
 
 

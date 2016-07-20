@@ -72,7 +72,13 @@ public interface NettyFactory {
      * @return A server implementation.
      */
     static ServerNetty createServerNetty(final int port, final DecoderEncoder codec, final HandlerFactory factory) {
-        return createServerNetty(null, port, codec, factory);
+        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(codec, factory);
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+        ServerBootstrap bs = new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
+
+        return ServerNetty.fromPort(bs, port);
     }
 
     /**
@@ -91,7 +97,7 @@ public interface NettyFactory {
 
         ServerBootstrap bs = new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
 
-        return new ServerNetty(bs, address, port);
+        return ServerNetty.fromAddress(bs, address, port);
     }
 
     /**
