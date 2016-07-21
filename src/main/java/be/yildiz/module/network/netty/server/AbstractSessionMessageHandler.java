@@ -25,35 +25,28 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.netty.HandlerFactory;
-import be.yildiz.module.network.server.SessionManager;
-import io.netty.channel.ChannelHandler;
+import be.yildiz.module.network.AbstractHandler;
+import be.yildiz.module.network.server.Session;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.util.Optional;
 
 /**
  * @author Grégory Van den Borre
  */
-public final class SessionServerHandlerFactory implements HandlerFactory {
+public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInboundHandler<T> {
 
-    private final SessionServerHandler handler;
+    protected final AbstractHandler handler;
 
-    private final DecoderEncoder codec;
+    protected Optional<Session> session = Optional.empty();
 
-    public SessionServerHandlerFactory(final SessionManager sessionManager, final DecoderEncoder codec) {
+    public AbstractSessionMessageHandler(final AbstractHandler handler) {
         super();
-        this.codec = codec;
-        this.handler = new SessionServerHandler(sessionManager);
+        this.handler = handler;
     }
 
-    public ChannelHandler create() {
-        if(this.codec == DecoderEncoder.WEBSOCKET) {
-            return new SessionWebSocketMessageHandler(this.handler);
-        }
-        return new SessionMessageHandler(this.handler);
-    }
-
-    @Override
-    public DecoderEncoder getCodec() {
-        return this.codec;
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
+        this.session.ifPresent(Session::disconnect);
     }
 }

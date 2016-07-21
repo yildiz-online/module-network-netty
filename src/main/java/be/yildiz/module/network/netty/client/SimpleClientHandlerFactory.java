@@ -26,6 +26,7 @@
 package be.yildiz.module.network.netty.client;
 
 import be.yildiz.module.network.client.ClientCallBack;
+import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.netty.HandlerFactory;
 import io.netty.channel.ChannelHandler;
 
@@ -36,14 +37,26 @@ public class SimpleClientHandlerFactory implements HandlerFactory {
 
     private final ClientCallBack callBack;
 
-    public SimpleClientHandlerFactory(final ClientCallBack cb) {
+    private final DecoderEncoder codec;
+
+    public SimpleClientHandlerFactory(final ClientCallBack cb, DecoderEncoder codec) {
         super();
         this.callBack = cb;
+        this.codec = codec;
     }
 
     @Override
     public ChannelHandler create() {
+        if(codec == DecoderEncoder.WEBSOCKET) {
+            return null;
+        }
+
         return new SimpleClientHandler(this.callBack);
+    }
+
+    @Override
+    public DecoderEncoder getCodec() {
+        return this.codec;
     }
 
 }

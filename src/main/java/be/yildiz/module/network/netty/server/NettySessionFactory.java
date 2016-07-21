@@ -25,51 +25,55 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.module.network.AbstractHandler;
+import be.yildiz.common.id.PlayerId;
+import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.server.Session;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Optional;
+import io.netty.channel.Channel;
 
 /**
- * Base handler for netty messages, just manage reception of messages.
- *
  * @author Grégory Van den Borre
  */
-public final class AnonymousMessageHandler extends SimpleChannelInboundHandler<String> {
+public class NettySessionFactory {
 
     /**
-     * Will handle every message received.
-     */
-    private final AbstractHandler handler;
-
-    /**
-     * Session established once the first message is received.
-     */
-    private Optional<Session> session = Optional.empty();
-
-    /**
-     * Create a new message handler.
+     * Create a new session associated to a player.
      *
-     * @param handler Handler to use every time a message is received.
+     * @param player  Id of the logged player.
+     * @param channel Associated Netty channel.
+     * @return The created session.
      */
-    public AnonymousMessageHandler(final AbstractHandler handler) {
-        super();
-        this.handler = handler;
+    static Session createText(final PlayerId player, final Channel channel, DecoderEncoder codec) {
+        return new TextNettySession(player, channel);
     }
 
-    @Override
-    public final void channelRead0(final ChannelHandlerContext ctx, final String message) throws Exception {
-        if (!session.isPresent()) {
-            this.session = Optional.of(NettySession.createAnonymous(ctx.channel()));
-        }
-        this.handler.processMessages(this.session.get(), message);
+    /**
+     * Create a new session with no associated player and set it setAuthenticated.
+     *
+     * @param channel Associated Netty channel.
+     * @return The created session.
+     */
+    static Session createAnonymousText(final Channel channel) {
+        return new TextNettySession(PlayerId.WORLD, channel);
     }
 
-    @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable e) throws Exception {
-        this.session.ifPresent(Session::disconnect);
+    /**
+     * Create a new session associated to a player.
+     *
+     * @param player  Id of the logged player.
+     * @param channel Associated Netty channel.
+     * @return The created session.
+     */
+    static Session createWebSocket(final PlayerId player, final Channel channel) {
+        return new WebSocketNettySession(player, channel);
     }
 
+    /**
+     * Create a new session with no associated player and set it setAuthenticated.
+     *
+     * @param channel Associated Netty channel.
+     * @return The created session.
+     */
+    static Session createAnonymousWebSocket(final Channel channel) {
+        return new WebSocketNettySession(PlayerId.WORLD, channel);
+    }
 }

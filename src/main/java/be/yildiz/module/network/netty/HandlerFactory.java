@@ -32,7 +32,6 @@ import io.netty.channel.ChannelHandler;
  *
  * @author Grégory Van den Borre
  */
-@FunctionalInterface
 public interface HandlerFactory {
 
     /**
@@ -40,4 +39,6 @@ public interface HandlerFactory {
      * @Ensures Returned value != null
      */
     ChannelHandler create();
+
+    DecoderEncoder getCodec();
 }

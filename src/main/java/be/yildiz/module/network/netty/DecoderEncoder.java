@@ -23,37 +23,35 @@
 //        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //        SOFTWARE.
 
-package be.yildiz.module.network.netty.server;
-
-import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.netty.HandlerFactory;
-import be.yildiz.module.network.server.SessionManager;
-import io.netty.channel.ChannelHandler;
+package be.yildiz.module.network.netty;
 
 /**
  * @author Grégory Van den Borre
  */
-public final class SessionServerHandlerFactory implements HandlerFactory {
+/**
+ * Possible codec between client and server.
+ *
+ * @author Van den Borre Grégory
+ */
+public enum DecoderEncoder {
 
-    private final SessionServerHandler handler;
+    /**
+     * Simple string messages, using UTF-8.
+     */
+    STRING,
 
-    private final DecoderEncoder codec;
+    /**
+     * Transfer for files using HTTP protocol.
+     */
+    HTTP,
 
-    public SessionServerHandlerFactory(final SessionManager sessionManager, final DecoderEncoder codec) {
-        super();
-        this.codec = codec;
-        this.handler = new SessionServerHandler(sessionManager);
-    }
+    /**
+     * Transfer using ZLIB compression.
+     */
+    ZLIB,
 
-    public ChannelHandler create() {
-        if(this.codec == DecoderEncoder.WEBSOCKET) {
-            return new SessionWebSocketMessageHandler(this.handler);
-        }
-        return new SessionMessageHandler(this.handler);
-    }
-
-    @Override
-    public DecoderEncoder getCodec() {
-        return this.codec;
-    }
+    /**
+     * String messages over a websocket.
+     */
+    WEBSOCKET;
 }

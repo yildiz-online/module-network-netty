@@ -26,38 +26,26 @@
 package be.yildiz.module.network.netty.server;
 
 import be.yildiz.module.network.AbstractHandler;
-import be.yildiz.module.network.server.Session;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Optional;
 
 /**
  * @author Grégory Van den Borre
  */
-public final class SessionMessageHandler extends SimpleChannelInboundHandler<String> {
-
-    private final AbstractHandler handler;
-
-    private Optional<Session> session = Optional.empty();
+public final class SessionMessageHandler extends AbstractSessionMessageHandler<String> {
 
     public SessionMessageHandler(final AbstractHandler handler) {
-        super();
-        this.handler = handler;
+        super(handler);
     }
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        this.session = Optional.of(NettySession.createAnonymous(ctx.channel()));
+        this.session = Optional.of(NettySessionFactory.createAnonymousText(ctx.channel()));
     }
 
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final String message) throws Exception {
         this.handler.processMessages(this.session.get(), message);
     }
-
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
-        this.session.ifPresent(Session::disconnect);
-    }
-
 }

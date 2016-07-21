@@ -25,20 +25,17 @@
 
 package be.yildiz.module.network.netty;
 
-import be.yildiz.common.collections.Lists;
 import be.yildiz.common.exeption.UnhandledSwitchCaseException;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.CharsetUtil;
-
-import java.util.List;
 
 /**
  * Pipeline factory to build a pipeline to use for netty transfer, every time a channel is initialized, the pipeline is
@@ -49,11 +46,6 @@ import java.util.List;
 public final class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     /**
-     * List of handler to register every time a channel is initialized.
-     */
-    private final List<ChannelHandler> handlers = Lists.newList();
-
-    /**
      * Create additional handler every time a channel is initialized.
      */
     private final HandlerFactory factory;
@@ -61,60 +53,37 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
     /**
      * Create a new instance and register the handlers.
      *
-     * @param codec   Used to register the handler to add to the channel once initialize.
      * @param factory Create additional handler every time a channel is initialized.
      * @Requires codec != null
      * @Requires factory != null
      */
-    public NettyChannelInitializer(final DecoderEncoder codec, final HandlerFactory factory) {
+    public NettyChannelInitializer(final HandlerFactory factory) {
         super();
         this.factory = factory;
-        switch (codec) {
-            case STRING:
-                this.handlers.add(new StringEncoder(CharsetUtil.UTF_8));
-                this.handlers.add(new StringDecoder(CharsetUtil.UTF_8));
-                break;
-            case HTTP:
-                this.handlers.add(new HttpServerCodec());
-                this.handlers.add(new HttpObjectAggregator(65536));
-                this.handlers.add(new ChunkedWriteHandler());
-                break;
-            default:
-                throw new UnhandledSwitchCaseException(codec);
-        }
     }
 
 
     @Override
     protected void initChannel(final SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        this.handlers.forEach(pipeline::addLast);
+        switch (factory.getCodec()) {
+            case STRING:
+                pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+                pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+                break;
+            case HTTP:
+                pipeline.addLast(new HttpServerCodec());
+                pipeline.addLast(new HttpObjectAggregator(65536));
+                pipeline.addLast(new ChunkedWriteHandler());
+                break;
+            case WEBSOCKET:
+                pipeline.addLast(new HttpServerCodec());
+                pipeline.addLast(new HttpObjectAggregator(65536));
+                pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));
+                break;
+            default:
+                throw new UnhandledSwitchCaseException(factory.getCodec());
+        }
         pipeline.addLast("handler", this.factory.create());
     }
-
-
-    /**
-     * Possible codec between client and server.
-     *
-     * @author Van den Borre Grégory
-     */
-    public enum DecoderEncoder {
-
-        /**
-         * Simple string messages, using UTF-8.
-         */
-        STRING,
-
-        /**
-         * Transfer for files using HTTP protocol.
-         */
-        HTTP,
-
-        /**
-         * Transfer using ZLIB compression.
-         */
-        ZLIB;
-    }
-
-
 }

@@ -25,35 +25,27 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.netty.HandlerFactory;
-import be.yildiz.module.network.server.SessionManager;
-import io.netty.channel.ChannelHandler;
+import be.yildiz.common.id.PlayerId;
+import io.netty.channel.Channel;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 /**
  * @author Grégory Van den Borre
  */
-public final class SessionServerHandlerFactory implements HandlerFactory {
+public class WebSocketNettySession extends NettySession {
 
-    private final SessionServerHandler handler;
-
-    private final DecoderEncoder codec;
-
-    public SessionServerHandlerFactory(final SessionManager sessionManager, final DecoderEncoder codec) {
-        super();
-        this.codec = codec;
-        this.handler = new SessionServerHandler(sessionManager);
-    }
-
-    public ChannelHandler create() {
-        if(this.codec == DecoderEncoder.WEBSOCKET) {
-            return new SessionWebSocketMessageHandler(this.handler);
-        }
-        return new SessionMessageHandler(this.handler);
+    /**
+     * Full constructor.
+     *
+     * @param player  Id of the logged player.
+     * @param channel Associated Netty channel.
+     */
+    WebSocketNettySession(PlayerId player, Channel channel) {
+        super(player, channel);
     }
 
     @Override
-    public DecoderEncoder getCodec() {
-        return this.codec;
+    protected void write(Channel ch, String message) {
+        ch.writeAndFlush(new TextWebSocketFrame(message));
     }
 }

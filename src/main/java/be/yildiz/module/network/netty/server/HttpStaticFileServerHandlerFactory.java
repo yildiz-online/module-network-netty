@@ -25,6 +25,7 @@
 
 package be.yildiz.module.network.netty.server;
 
+import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.netty.HandlerFactory;
 import io.netty.channel.ChannelHandler;
 
@@ -45,5 +46,10 @@ public final class HttpStaticFileServerHandlerFactory implements HandlerFactory 
     @Override
     public ChannelHandler create() {
         return new HttpStaticFileServerHandler(this.forbiddenList);
+    }
+
+    @Override
+    public DecoderEncoder getCodec() {
+        return DecoderEncoder.HTTP;
     }
 }

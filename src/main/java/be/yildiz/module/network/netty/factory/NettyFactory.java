@@ -25,9 +25,9 @@
 
 package be.yildiz.module.network.netty.factory;
 
+import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.netty.HandlerFactory;
 import be.yildiz.module.network.netty.NettyChannelInitializer;
-import be.yildiz.module.network.netty.NettyChannelInitializer.DecoderEncoder;
 import be.yildiz.module.network.netty.client.ClientNetty;
 import be.yildiz.module.network.netty.client.SimpleClientHandlerFactory;
 import be.yildiz.module.network.netty.server.HttpStaticFileServerHandlerFactory;
@@ -59,7 +59,7 @@ public interface NettyFactory {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap().group(group).channel(NioSocketChannel.class);
         ClientNetty client = new ClientNetty(bootstrap);
-        bootstrap.handler(new NettyChannelInitializer(DecoderEncoder.STRING, new SimpleClientHandlerFactory(client)));
+        bootstrap.handler(new NettyChannelInitializer(new SimpleClientHandlerFactory(client, DecoderEncoder.STRING)));
         return client;
     }
 
@@ -68,11 +68,10 @@ public interface NettyFactory {
      *
      * @param port    Port number.
      * @param factory Factory to create logic handlers.
-     * @param codec   Communication codec.
      * @return A server implementation.
      */
-    static ServerNetty createServerNetty(final int port, final DecoderEncoder codec, final HandlerFactory factory) {
-        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(codec, factory);
+    static ServerNetty createServerNetty(final int port, final HandlerFactory factory) {
+        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(factory);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -87,11 +86,10 @@ public interface NettyFactory {
      * @param address Address where the socket will be created(can be null).
      * @param port    Port number.
      * @param factory Factory to create logic handlers.
-     * @param codec   Communication codec.
      * @return A server implementation.
      */
-    static ServerNetty createServerNetty(final String address, final int port, DecoderEncoder codec, HandlerFactory factory) {
-        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(codec, factory);
+    static ServerNetty createServerNetty(final String address, final int port, HandlerFactory factory) {
+        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(factory);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -108,7 +106,7 @@ public interface NettyFactory {
      * @return A server implementation.
      */
     static ServerNetty createHttpServerNetty(final int port, final List<String> forbiddenFiles) {
-        return createServerNetty(port, DecoderEncoder.HTTP, new HttpStaticFileServerHandlerFactory(forbiddenFiles));
+        return createServerNetty(port, new HttpStaticFileServerHandlerFactory(forbiddenFiles));
     }
 
 }

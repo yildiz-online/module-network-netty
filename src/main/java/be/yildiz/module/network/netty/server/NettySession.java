@@ -38,7 +38,7 @@ import java.util.Set;
  *
  * @author Grégory Van den Borre
  */
-class NettySession extends Session {
+abstract class NettySession extends Session {
 
     /**
      * Channel used for data transmission.
@@ -52,43 +52,24 @@ class NettySession extends Session {
      * @param player  Id of the logged player.
      * @param channel Associated Netty channel.
      */
-    private NettySession(final PlayerId player, final Channel channel) {
+    protected NettySession(final PlayerId player, final Channel channel) {
         super(player);
         this.channel = channel;
     }
 
-    /**
-     * Create a new session associated to a player.
-     *
-     * @param player  Id of the logged player.
-     * @param channel Associated Netty channel.
-     * @return The created session.
-     */
-    static Session create(final PlayerId player, final Channel channel) {
-        return new NettySession(player, channel);
-    }
-
-    /**
-     * Create a new session with no associated player and set it setAuthenticated.
-     *
-     * @param channel Associated Netty channel.
-     * @return The created session.
-     */
-    static Session createAnonymous(final Channel channel) {
-        return new NettySession(PlayerId.WORLD, channel);
-    }
-
     @Override
     public void sendMessage(final ServerResponse message) {
-        this.channel.writeAndFlush(message.buildMessage());
+        this.write(this.channel, message.buildMessage());
     }
 
     @Override
     public void sendMessage(final Set<ServerResponse> messageList) {
         StringBuilder sb = new StringBuilder();
         messageList.forEach(r -> sb.append(r.buildMessage()));
-        this.channel.writeAndFlush(sb.toString());
+        this.write(this.channel, sb.toString());
     }
+
+    protected abstract void write(final Channel ch, final String message);
 
     @Override
     protected void closeSession() {

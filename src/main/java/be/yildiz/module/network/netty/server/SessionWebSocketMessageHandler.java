@@ -25,35 +25,28 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.netty.HandlerFactory;
-import be.yildiz.module.network.server.SessionManager;
-import io.netty.channel.ChannelHandler;
+import be.yildiz.module.network.AbstractHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+
+import java.util.Optional;
 
 /**
  * @author Grégory Van den Borre
  */
-public final class SessionServerHandlerFactory implements HandlerFactory {
+public class SessionWebSocketMessageHandler extends AbstractSessionMessageHandler<TextWebSocketFrame>{
 
-    private final SessionServerHandler handler;
-
-    private final DecoderEncoder codec;
-
-    public SessionServerHandlerFactory(final SessionManager sessionManager, final DecoderEncoder codec) {
-        super();
-        this.codec = codec;
-        this.handler = new SessionServerHandler(sessionManager);
-    }
-
-    public ChannelHandler create() {
-        if(this.codec == DecoderEncoder.WEBSOCKET) {
-            return new SessionWebSocketMessageHandler(this.handler);
-        }
-        return new SessionMessageHandler(this.handler);
+    public SessionWebSocketMessageHandler(AbstractHandler handler) {
+        super(handler);
     }
 
     @Override
-    public DecoderEncoder getCodec() {
-        return this.codec;
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+        this.session = Optional.of(NettySessionFactory.createAnonymousWebSocket(ctx.channel()));
+    }
+
+    @Override
+    public void channelRead0(final ChannelHandlerContext ctx, final TextWebSocketFrame message) throws Exception {
+        this.handler.processMessages(this.session.get(), message.text());
     }
 }
