@@ -5,7 +5,8 @@ The netty module is an implementation of the module-network, based on Netty-IO.
 
 ## Features
 
-* Very fast library
+* Very fast library.
+* Support raw socket, websocket, http protocols.
 * ...
 
 ## Requirements
