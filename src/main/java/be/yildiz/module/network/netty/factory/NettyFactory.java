@@ -30,6 +30,7 @@ import be.yildiz.module.network.netty.HandlerFactory;
 import be.yildiz.module.network.netty.NettyChannelInitializer;
 import be.yildiz.module.network.netty.client.ClientNetty;
 import be.yildiz.module.network.netty.client.SimpleClientHandlerFactory;
+import be.yildiz.module.network.netty.client.WebSocketClientNetty;
 import be.yildiz.module.network.netty.server.HttpStaticFileServerHandlerFactory;
 import be.yildiz.module.network.netty.server.ServerNetty;
 import io.netty.bootstrap.Bootstrap;
@@ -58,8 +59,8 @@ public interface NettyFactory {
     static ClientNetty createClientNetty() {
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap().group(group).channel(NioSocketChannel.class);
-        ClientNetty client = new ClientNetty(bootstrap);
-        bootstrap.handler(new NettyChannelInitializer(new SimpleClientHandlerFactory(client, DecoderEncoder.STRING)));
+        ClientNetty client = new WebSocketClientNetty(bootstrap);
+        bootstrap.handler(new NettyChannelInitializer(new SimpleClientHandlerFactory(client, DecoderEncoder.WEBSOCKET)));
         return client;
     }
 

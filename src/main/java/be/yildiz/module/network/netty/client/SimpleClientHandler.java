@@ -25,79 +25,23 @@
 
 package be.yildiz.module.network.netty.client;
 
-import be.yildiz.common.collections.Lists;
-import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.ClientCallBack;
-import be.yildiz.module.network.protocol.MessageSeparation;
-import be.yildiz.module.network.protocol.MessageWrapper;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.List;
 
 /**
  * AbstractHandler managing the creation of the channel and the use of it.
  *
  * @author Grégory Van den Borre
  */
-public final class SimpleClientHandler extends SimpleChannelInboundHandler<String> {
-
-    private static final int BUFFER_SIZE = 1024;
-    /**
-     * Used to store an incomplete message waiting for its other parts.
-     */
-    private final List<String> cutMessage = Lists.newList();
-
-    private final ClientCallBack callBack;
+public final class SimpleClientHandler extends AbstractClientMessageHandler<String> {
 
     public SimpleClientHandler(ClientCallBack cb) {
-        super();
-        this.callBack = cb;
+        super(cb);
     }
 
-    @Override
-    public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
-        super.channelInactive(ctx);
-        this.callBack.connectionFailed();
-        Logger.info("Netty channel closed: " + ctx.channel());
-    }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String message) {
-        if (message.endsWith(MessageSeparation.MESSAGE_END)) {
-            if (!this.cutMessage.isEmpty()) {
-                StringBuilder sb = new StringBuilder(BUFFER_SIZE);
-                this.cutMessage.forEach(sb::append);
-                sb.append(message);
-                this.processMessage(sb.toString());
-
-                this.cutMessage.clear();
-            } else {
-                this.processMessage(message);
-            }
-        } else {
-            this.cutMessage.add(message);
-        }
-    }
-
-    /**
-     * Process the message to cut it in readable message.
-     *
-     * @param message Message to process.
-     */
-    private void processMessage(final String message) {
-        String messageWithoutStartChar = message.replaceAll(MessageSeparation.MESSAGE_BEGIN, "");
-        final String[] messages = messageWithoutStartChar.split(MessageSeparation.MESSAGE_END);
-        for (final String c : messages) {
-            MessageWrapper current = new MessageWrapper(c);
-            callBack.messageReceived(current);
-        }
-    }
-
-    @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable e) {
-        Logger.error(e);
-        ctx.channel().close();
-        callBack.connectionLost();
+        this.handleMessage(message);
     }
 }

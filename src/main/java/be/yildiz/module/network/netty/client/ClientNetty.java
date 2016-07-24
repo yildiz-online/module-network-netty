@@ -27,6 +27,7 @@ package be.yildiz.module.network.netty.client;
 
 import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.AbstractNetworkEngineClient;
+import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.protocol.ServerRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -41,7 +42,7 @@ import java.util.Optional;
  *
  * @author Grégory Van den Borre
  */
-public final class ClientNetty extends AbstractNetworkEngineClient {
+public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
 
     /**
      * Netty bootstrap object.
@@ -106,11 +107,15 @@ public final class ClientNetty extends AbstractNetworkEngineClient {
 
     @Override
     public void sendMessage(final String message) {
-        this.channel.ifPresent(c -> c.writeAndFlush(message));
+        this.channel.ifPresent(c -> c.writeAndFlush(this.buildMessage(message)));
     }
 
     @Override
     public void disconnect() {
         this.channel.ifPresent(Channel::disconnect);
     }
+
+    protected abstract T buildMessage(String message);
+
+    public abstract  DecoderEncoder getCodec();
 }

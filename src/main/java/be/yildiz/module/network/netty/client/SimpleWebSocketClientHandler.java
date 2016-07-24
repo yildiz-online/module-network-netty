@@ -26,37 +26,21 @@
 package be.yildiz.module.network.netty.client;
 
 import be.yildiz.module.network.client.ClientCallBack;
-import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.netty.HandlerFactory;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 /**
  * @author Grégory Van den Borre
  */
-public class SimpleClientHandlerFactory implements HandlerFactory {
+public class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<TextWebSocketFrame> {
 
-    private final ClientCallBack callBack;
-
-    private final DecoderEncoder codec;
-
-    public SimpleClientHandlerFactory(final ClientCallBack cb, DecoderEncoder codec) {
-        super();
-        this.callBack = cb;
-        this.codec = codec;
+    public SimpleWebSocketClientHandler(ClientCallBack cb) {
+        super(cb);
     }
 
     @Override
-    public ChannelHandler create() {
-        if(codec == DecoderEncoder.WEBSOCKET) {
-            return new SimpleWebSocketClientHandler(this.callBack);
-        }
-
-        return new SimpleClientHandler(this.callBack);
-    }
-
-    @Override
-    public DecoderEncoder getCodec() {
-        return this.codec;
+    public void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame received) {
+        this.handleMessage(received.text());
     }
 
 }
