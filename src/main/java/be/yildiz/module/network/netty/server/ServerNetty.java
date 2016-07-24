@@ -124,9 +124,11 @@ public final class ServerNetty implements Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                Logger.info("server bound to :" + this.port);
+                Logger.debug("server bound to :" + this.port);
+                Logger.info("Server started.");
             } else {
                 Logger.warning("server not bound to :" + this.port);
+                Logger.info("Server not started.");
             }
         } catch (ChannelException e) {
             throw new NetworkException("Port " + this.port + " already in use.", e);

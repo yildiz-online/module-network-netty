@@ -29,6 +29,7 @@ import be.yildiz.common.exeption.UnhandledSwitchCaseException;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
@@ -77,9 +78,14 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
                 pipeline.addLast(new ChunkedWriteHandler());
                 break;
             case WEBSOCKET:
-                pipeline.addLast(new HttpServerCodec());
-                pipeline.addLast(new HttpObjectAggregator(65536));
-                pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));
+                if(this.factory.isServer()) {
+                    pipeline.addLast(new HttpServerCodec());
+                    pipeline.addLast(new HttpObjectAggregator(65536));
+                    pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));
+                } else {
+                    pipeline.addLast(new HttpClientCodec());
+                    pipeline.addLast(new HttpObjectAggregator(8192));
+                }
                 break;
             default:
                 throw new UnhandledSwitchCaseException(factory.getCodec());

@@ -41,4 +41,6 @@ public interface HandlerFactory {
     ChannelHandler create();
 
     DecoderEncoder getCodec();
+
+    boolean isServer();
 }

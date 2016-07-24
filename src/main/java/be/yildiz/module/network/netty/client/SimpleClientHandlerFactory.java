@@ -59,4 +59,9 @@ public class SimpleClientHandlerFactory implements HandlerFactory {
         return this.codec;
     }
 
+    @Override
+    public boolean isServer() {
+        return false;
+    }
+
 }

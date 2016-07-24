@@ -56,4 +56,9 @@ public final class SessionServerHandlerFactory implements HandlerFactory {
     public DecoderEncoder getCodec() {
         return this.codec;
     }
+
+    @Override
+    public boolean isServer() {
+        return true;
+    }
 }

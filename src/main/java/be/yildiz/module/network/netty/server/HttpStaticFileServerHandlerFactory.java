@@ -52,4 +52,9 @@ public final class HttpStaticFileServerHandlerFactory implements HandlerFactory 
     public DecoderEncoder getCodec() {
         return DecoderEncoder.HTTP;
     }
+
+    @Override
+    public boolean isServer() {
+        return true;
+    }
 }

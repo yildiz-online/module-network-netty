@@ -61,9 +61,9 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
      */
     public ClientNetty(final Bootstrap clientBootstrap) {
         super();
-        Logger.info("Initializing Netty network engine...");
+        Logger.info("Initializing Netty network client engine...");
         this.bootstrap = clientBootstrap;
-        Logger.info("Netty network engine initialized.");
+        Logger.info("Netty network engine client initialized.");
 
     }
 
@@ -78,7 +78,8 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
 
     @Override
     public void connect(final String address, final int port) {
-        Logger.info("Connecting to " + address + " : " + port);
+        Logger.info("Connecting to server " + address + " : " + port);
+
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
         if (!future.awaitUninterruptibly().isSuccess()) {
             this.connectionFailed();

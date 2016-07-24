@@ -25,22 +25,68 @@
 
 package be.yildiz.module.network.netty.client;
 
+import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.ClientCallBack;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.channel.ChannelPromise;
+import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.websocketx.*;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * @author Grégory Van den Borre
  */
-public class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<TextWebSocketFrame> {
+public class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> {
+
+    private WebSocketClientHandshaker handshaker;
+
+    private ChannelPromise handshakeFuture;
 
     public SimpleWebSocketClientHandler(ClientCallBack cb) {
         super(cb);
     }
 
+    public ChannelFuture handshakeFuture() {
+        return handshakeFuture;
+    }
+
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame received) {
-        this.handleMessage(received.text());
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        handshakeFuture = ctx.newPromise();
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws URISyntaxException {
+        String host = ((InetSocketAddress)ctx.channel().remoteAddress()).getAddress().getHostAddress();
+        int port = ((InetSocketAddress)ctx.channel().remoteAddress()).getPort();
+        String uri = "ws://" + host + ":" + port + "/websocket";
+        this.handshaker = WebSocketClientHandshakerFactory.newHandshaker(
+                new URI(uri), WebSocketVersion.V13, null, false, new DefaultHttpHeaders());
+        this.handshaker.handshake(ctx.channel());
+    }
+
+    @Override
+    public void channelRead0(ChannelHandlerContext ctx, Object received) {
+        Channel ch = ctx.channel();
+        if (!handshaker.isHandshakeComplete()) {
+            handshaker.finishHandshake(ch, (FullHttpResponse) received);
+            Logger.debug("Handshake complete.");
+            handshakeFuture.setSuccess();
+            return;
+        }
+
+        if (received instanceof TextWebSocketFrame) {
+            TextWebSocketFrame textFrame = (TextWebSocketFrame) received;
+            this.handleMessage(textFrame.text());
+        } else if (received instanceof CloseWebSocketFrame) {
+            ch.close();
+        }
     }
 
 }
