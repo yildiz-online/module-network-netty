@@ -44,12 +44,14 @@ import java.net.URISyntaxException;
  */
 public class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> {
 
+    private final ClientCallBack callBack;
     private WebSocketClientHandshaker handshaker;
 
     private ChannelPromise handshakeFuture;
 
     public SimpleWebSocketClientHandler(ClientCallBack cb) {
         super(cb);
+        this.callBack = cb;
     }
 
     public ChannelFuture handshakeFuture() {
@@ -75,15 +77,23 @@ public class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<O
     public void channelRead0(ChannelHandlerContext ctx, Object received) {
         Channel ch = ctx.channel();
         if (!handshaker.isHandshakeComplete()) {
-            handshaker.finishHandshake(ch, (FullHttpResponse) received);
+            if(!(received instanceof FullHttpResponse)) {
+                Logger.warning("Receiving message before handshake complete." + received);
+                return;
+            }
+            FullHttpResponse handshake = FullHttpResponse.class.cast(received);
+            Logger.debug("Handshake received:" + handshake);
+            handshaker.finishHandshake(ch, handshake);
             Logger.debug("Handshake complete.");
             handshakeFuture.setSuccess();
+            this.callBack.handShakeComplete();
             return;
         }
 
         if (received instanceof TextWebSocketFrame) {
-            TextWebSocketFrame textFrame = (TextWebSocketFrame) received;
-            this.handleMessage(textFrame.text());
+            String message = TextWebSocketFrame.class.cast(received).text();
+            Logger.debug("Textframe received:" + message);
+            this.handleMessage(message);
         } else if (received instanceof CloseWebSocketFrame) {
             ch.close();
         }

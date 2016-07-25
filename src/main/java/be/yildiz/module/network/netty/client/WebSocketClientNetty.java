@@ -34,6 +34,8 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
  */
 public class WebSocketClientNetty extends ClientNetty<TextWebSocketFrame>{
 
+    private boolean connectionComplete;
+
     /**
      * Create a new instance of a client.
      *
@@ -44,6 +46,10 @@ public class WebSocketClientNetty extends ClientNetty<TextWebSocketFrame>{
     }
 
     @Override
+    protected void connectionComplete() {
+    }
+
+    @Override
     protected TextWebSocketFrame buildMessage(String message) {
         return new TextWebSocketFrame(message);
     }
@@ -51,5 +57,10 @@ public class WebSocketClientNetty extends ClientNetty<TextWebSocketFrame>{
     @Override
     public DecoderEncoder getCodec() {
         return DecoderEncoder.WEBSOCKET;
+    }
+
+    @Override
+    public void handShakeComplete() {
+        this.connectionSuccessful();
     }
 }

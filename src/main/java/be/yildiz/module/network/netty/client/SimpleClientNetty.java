@@ -43,6 +43,11 @@ public class SimpleClientNetty extends ClientNetty<String>{
     }
 
     @Override
+    protected void connectionComplete() {
+        this.connectionSuccessful();
+    }
+
+    @Override
     protected String buildMessage(String message) {
         return message;
     }

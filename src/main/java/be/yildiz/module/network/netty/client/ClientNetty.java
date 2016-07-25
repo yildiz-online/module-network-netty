@@ -86,9 +86,11 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
             this.bootstrap.group().shutdownGracefully();
         } else {
             this.channel = Optional.of(future.channel());
-            this.connectionSuccessful();
+            this.connectionComplete();
         }
     }
+
+    protected abstract void connectionComplete();
 
     @Override
     public void close() {
