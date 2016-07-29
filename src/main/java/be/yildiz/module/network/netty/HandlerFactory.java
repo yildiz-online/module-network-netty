@@ -25,6 +25,7 @@
 
 package be.yildiz.module.network.netty;
 
+import com.google.java.contract.Ensures;
 import io.netty.channel.ChannelHandler;
 
 /**
@@ -36,10 +37,14 @@ public interface HandlerFactory {
 
     /**
      * @return A new ChannelHandler.
-     * @Ensures Returned value != null
      */
+    @Ensures("result != null")
     ChannelHandler create();
 
+    /**
+     * @return The codec.
+     */
+    @Ensures("result != null")
     DecoderEncoder getCodec();
 
     boolean isServer();
