@@ -29,17 +29,20 @@ import be.yildiz.module.network.AbstractHandler;
 import be.yildiz.module.network.protocol.MessageWrapper;
 import be.yildiz.module.network.server.Session;
 import be.yildiz.module.network.server.SessionManager;
-import lombok.AllArgsConstructor;
 
 /**
  * A simple that will only redirect received messages to the session manager.
  *
  * @author Grégory Van den Borre
  */
-@AllArgsConstructor
 public final class SessionServerHandler extends AbstractHandler {
 
     private final SessionManager sessionManager;
+
+    SessionServerHandler(final SessionManager sessionManager) {
+        super();
+        this.sessionManager = sessionManager;
+    }
 
     @Override
     protected void messageReceivedImpl(final Session session, final MessageWrapper message) {

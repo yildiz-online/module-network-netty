@@ -45,6 +45,7 @@ public final class SessionServerHandlerFactory implements HandlerFactory {
         this.handler = new SessionServerHandler(sessionManager);
     }
 
+    @Override
     public ChannelHandler create() {
         if(this.codec == DecoderEncoder.WEBSOCKET) {
             return new SessionWebSocketMessageHandler(this.handler);
