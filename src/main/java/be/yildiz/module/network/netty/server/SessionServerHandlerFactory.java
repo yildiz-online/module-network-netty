@@ -27,7 +27,7 @@ package be.yildiz.module.network.netty.server;
 
 import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.netty.HandlerFactory;
-import be.yildiz.module.network.server.AuthenticationSessionManager;
+import be.yildiz.module.network.server.SessionManager;
 import io.netty.channel.ChannelHandler;
 
 /**
@@ -39,7 +39,7 @@ public final class SessionServerHandlerFactory implements HandlerFactory {
 
     private final DecoderEncoder codec;
 
-    public SessionServerHandlerFactory(final AuthenticationSessionManager sessionManager, final DecoderEncoder codec) {
+    public SessionServerHandlerFactory(final SessionManager sessionManager, final DecoderEncoder codec) {
         super();
         this.codec = codec;
         this.handler = new SessionServerHandler(sessionManager);

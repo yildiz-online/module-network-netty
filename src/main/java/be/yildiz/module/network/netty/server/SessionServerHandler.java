@@ -27,8 +27,8 @@ package be.yildiz.module.network.netty.server;
 
 import be.yildiz.module.network.AbstractHandler;
 import be.yildiz.module.network.protocol.MessageWrapper;
-import be.yildiz.module.network.server.AuthenticationSessionManager;
 import be.yildiz.module.network.server.Session;
+import be.yildiz.module.network.server.SessionManager;
 
 /**
  * A simple that will only redirect received messages to the session manager.
@@ -37,9 +37,9 @@ import be.yildiz.module.network.server.Session;
  */
 public final class SessionServerHandler extends AbstractHandler {
 
-    private final AuthenticationSessionManager sessionManager;
+    private final SessionManager sessionManager;
 
-    SessionServerHandler(final AuthenticationSessionManager sessionManager) {
+    SessionServerHandler(final SessionManager sessionManager) {
         super();
         this.sessionManager = sessionManager;
     }
