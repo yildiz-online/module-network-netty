@@ -6,7 +6,7 @@
 
   <groupId>be.yildiz-games</groupId>
   <artifactId>module-network-netty</artifactId>
-  <version>1.0.0-0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2014</inceptionYear>
@@ -18,13 +18,13 @@
   <parent>
     <groupId>be.yildiz-games</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0-0-SNAPSHOT</version>
+    <version>1.0.4</version>
   </parent>
 
   <properties>
-    <version.bom-junit>1.0.0-0-SNAPSHOT</version.bom-junit>
-    <version.bom-netty>1.0.0-0-SNAPSHOT</version.bom-netty>
-    <version.module-network>1.0.0-0-SNAPSHOT</version.module-network>
+    <version.bom-junit>1.0.0</version.bom-junit>
+    <version.bom-netty>1.0.0</version.bom-netty>
+    <version.module-network>1.0.0</version.module-network>
   </properties>
 
   <dependencyManagement>
@@ -69,13 +69,5 @@
       <artifactId>mockito-all</artifactId>
     </dependency>
   </dependencies>
-  
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>OSS repository snapshot</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
   
 </project>

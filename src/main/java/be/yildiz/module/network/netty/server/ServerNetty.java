@@ -66,10 +66,9 @@ public final class ServerNetty implements Server {
      * @param bootstrap Netty server bootstrap to use.
      * @param address   Address to expose to clients.
      * @param port      Port to expose to clients.
-     * @requires bootstrap != null.
-     * @requires port > 0 < 65535.
-     * @effects Create a new instance of the Netty server.
      */
+    //@requires bootstrap != null.
+    //@requires port > 0 < 65535.
     private ServerNetty(final ServerBootstrap bootstrap, final String address, final int port) {
         super();
         this.address = address;
@@ -85,11 +84,10 @@ public final class ServerNetty implements Server {
      * @param bootstrap Netty server bootstrap to use.
      * @param address   Address to expose to clients.
      * @param port      Port to expose to clients.
-     * @requires bootstrap != null.
-     * @requires address != null.
-     * @requires port > 0 < 65535.
-     * @effects Create a new instance of the Netty server.
      */
+    //@requires bootstrap != null.
+    //@requires address != null.
+    //@requires port > 0 < 65535.
     public static ServerNetty fromAddress(final ServerBootstrap bootstrap, final String address, final int port) {
         return new ServerNetty(bootstrap, address, port);
     }
@@ -99,10 +97,10 @@ public final class ServerNetty implements Server {
      *
      * @param bootstrap Netty server bootstrap to use.
      * @param port      Port to expose to clients.
-     * @requires bootstrap != null.
-     * @requires port > 0 < 65535.
-     * @effects Create a new instance of the Netty server.
      */
+    // @requires bootstrap != null.
+    //@requires port > 0 < 65535.
+    //@effects Create a new instance of the Netty server.
     public static ServerNetty fromPort(final ServerBootstrap bootstrap, final int port) {
         return new ServerNetty(bootstrap, null, port);
     }
@@ -112,8 +110,8 @@ public final class ServerNetty implements Server {
      * Start the server to listen to clients.
      *
      * @throws NetworkException If the server failed to start(port already used...).
-     * @ensures To start the server and having the port listening to clients.
      */
+    //@ensures To start the server and having the port listening to clients.
     public void startServer() {
         try {
             InetSocketAddress socketAddress;

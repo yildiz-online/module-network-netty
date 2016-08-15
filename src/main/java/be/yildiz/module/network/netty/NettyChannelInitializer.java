@@ -55,9 +55,9 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
      * Create a new instance and register the handlers.
      *
      * @param factory Create additional handler every time a channel is initialized.
-     * @Requires codec != null
-     * @Requires factory != null
      */
+    //@Requires codec != null
+    //@Requires factory != null
     public NettyChannelInitializer(final HandlerFactory factory) {
         super();
         this.factory = factory;
@@ -78,7 +78,7 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
                 pipeline.addLast(new ChunkedWriteHandler());
                 break;
             case WEBSOCKET:
-                if(this.factory.isServer()) {
+                if (this.factory.isServer()) {
                     pipeline.addLast(new HttpServerCodec());
                     pipeline.addLast(new HttpObjectAggregator(65536));
                     pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));

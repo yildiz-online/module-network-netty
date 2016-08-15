@@ -19,7 +19,6 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 import io.netty.util.internal.SystemPropertyUtil;
-import lombok.AllArgsConstructor;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
@@ -47,7 +46,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * <li>Request #2 for {@code /file1.txt} does return the contents of the file again. Rather, a 304 Not Modified is returned. This tells the browser to use the contents stored in its cache.</li>
  * <li>The server knows the file has not been modified because the {@code If-Modified-Since} date is the same as the file's last modified date.</li>
  * </ol>
- * <p>
+ *
  * <pre>
  * Request #1 Headers
  * ===================
@@ -73,7 +72,6 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  *
  * </pre>
  */
-@AllArgsConstructor
 public final class HttpStaticFileServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     public static final String HTTP_DATE_FORMAT = "EEE, dd MMM yyyy HH:mm:ss zzz";
@@ -81,6 +79,11 @@ public final class HttpStaticFileServerHandler extends SimpleChannelInboundHandl
     public static final int HTTP_CACHE_SECONDS = 60;
     private static final Pattern INSECURE_URI = Pattern.compile(".*[<>&\"].*");
     private final List<String> forbiddenFileList;
+
+    public HttpStaticFileServerHandler(List<String> forbiddenFileList) {
+        super();
+        this.forbiddenFileList = forbiddenFileList;
+    }
 
     private static String sanitizeUri(String uri) {
         // Decode the path.
