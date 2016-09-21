@@ -29,8 +29,6 @@ import be.yildiz.module.network.AbstractHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
-import java.util.Optional;
-
 /**
  * @author Grégory Van den Borre
  */
@@ -42,11 +40,11 @@ public class SessionWebSocketMessageHandler extends AbstractSessionMessageHandle
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        this.session = Optional.of(NettySessionFactory.createAnonymousWebSocket(ctx.channel()));
+        this.setSession(NettySessionFactory.createAnonymousWebSocket(ctx.channel()));
     }
 
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final TextWebSocketFrame message) throws Exception {
-        this.handler.processMessages(this.session.get(), message.text());
+        this.getSession().ifPresent(s -> this.handler.processMessages(s, message.text()));
     }
 }

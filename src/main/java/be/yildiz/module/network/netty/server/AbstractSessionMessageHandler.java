@@ -39,7 +39,7 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
 
     protected final AbstractHandler handler;
 
-    protected Optional<Session> session = Optional.empty();
+    private Session session;
 
     public AbstractSessionMessageHandler(final AbstractHandler handler) {
         super();
@@ -47,6 +47,17 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
-        this.session.ifPresent(Session::disconnect);
+        this.getSession().ifPresent(Session::disconnect);
+    }
+
+    /**
+     * @return The associated session.
+     */
+    protected final Optional<Session> getSession() {
+        return Optional.ofNullable(this.session);
+    }
+
+    protected void setSession(Session session) {
+        this.session = session;
     }
 }

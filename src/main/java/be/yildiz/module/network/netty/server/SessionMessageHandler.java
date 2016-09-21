@@ -28,8 +28,6 @@ package be.yildiz.module.network.netty.server;
 import be.yildiz.module.network.AbstractHandler;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Optional;
-
 /**
  * @author Grégory Van den Borre
  */
@@ -41,11 +39,11 @@ public final class SessionMessageHandler extends AbstractSessionMessageHandler<S
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        this.session = Optional.of(NettySessionFactory.createAnonymousText(ctx.channel()));
+        this.setSession(NettySessionFactory.createAnonymousText(ctx.channel()));
     }
 
     @Override
     public void channelRead0(final ChannelHandlerContext ctx, final String message) throws Exception {
-        this.handler.processMessages(this.session.get(), message);
+        this.getSession().ifPresent(s -> this.handler.processMessages(s, message));
     }
 }
