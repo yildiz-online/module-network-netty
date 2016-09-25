@@ -18,13 +18,13 @@
   <parent>
     <groupId>be.yildiz-games</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.6-SNAPSHOT</version>
   </parent>
 
   <properties>
-    <version.bom-junit>1.0.0</version.bom-junit>
-    <version.bom-netty>1.0.0</version.bom-netty>
-    <version.module-network>1.0.0</version.module-network>
+    <version.bom-junit>1.0.2-SNAPSHOT</version.bom-junit>
+    <version.bom-netty>1.0.1-SNAPSHOT</version.bom-netty>
+    <version.module-network>1.0.1-SNAPSHOT</version.module-network>
   </properties>
 
   <dependencyManagement>
