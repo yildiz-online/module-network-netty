@@ -5,7 +5,7 @@
   <description>Module containing the Netty implementation for network.</description>
 
   <artifactId>module-network-netty</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2014</inceptionYear>
@@ -23,7 +23,7 @@
   <properties>
     <version.bom-junit>1.0.3</version.bom-junit>
     <version.bom-netty>1.0.1</version.bom-netty>
-    <version.module-network>1.0.1</version.module-network>
+    <version.module-network>1.0.2-SNAPSHOT</version.module-network>
   </properties>
 
   <dependencyManagement>
