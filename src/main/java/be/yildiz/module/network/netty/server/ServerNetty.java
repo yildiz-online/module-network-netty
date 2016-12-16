@@ -131,6 +131,7 @@ public final class ServerNetty implements Server {
         } catch (ChannelException e) {
             throw new NetworkException("Port " + this.port + " already in use.", e);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new NetworkException("Error starting network engine.", e);
         }
     }
