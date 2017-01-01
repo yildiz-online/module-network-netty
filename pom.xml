@@ -26,6 +26,7 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Yildiz Module Network Netty</name>
   <description>Module containing the Netty implementation for network.</description>
+  <url>https://bitbucket.org/yildiz-engine-team/module-network-netty</url>
 
   <artifactId>module-network-netty</artifactId>
   <version>1.0.2-SNAPSHOT</version>
@@ -42,12 +43,6 @@
     <artifactId>parent</artifactId>
     <version>1.0.8-SNAPSHOT</version>
   </parent>
-
-  <properties>
-    <version.bom-junit>1.0.4-SNAPSHOT</version.bom-junit>
-    <version.bom-netty>1.0.2-SNAPSHOT</version.bom-netty>
-    <version.module-network>1.0.2-SNAPSHOT</version.module-network>
-  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -72,7 +67,6 @@
     <dependency>
       <groupId>be.yildiz-games</groupId>
       <artifactId>module-network</artifactId>
-      <version>${version.module-network}</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
