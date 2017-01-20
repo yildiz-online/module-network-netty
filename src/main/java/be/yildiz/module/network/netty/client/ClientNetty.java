@@ -50,7 +50,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
     /**
      * Connection to the server.
      */
-    private Optional<Channel> channel = Optional.empty();
+    private Channel channel;
 
     /**
      * Create a new instance of a client.
@@ -83,7 +83,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
             this.connectionFailed();
             this.bootstrap.group().shutdownGracefully();
         } else {
-            this.channel = Optional.of(future.channel());
+            this.channel = future.channel();
             this.connectionComplete();
         }
     }
@@ -92,12 +92,13 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
 
     @Override
     public void close() {
-        if (this.channel.isPresent()) {
-            this.channel.get().disconnect();
-            this.channel.get().close();
-            this.channel = Optional.empty();
-            this.connectionLost();
-        }
+        Optional.ofNullable(this.channel)
+                .ifPresent(c -> {
+                    c.disconnect();
+                    c.close();
+                    this.connectionLost();
+                });
+        this.channel = null;
         this.bootstrap.group().shutdownGracefully();
     }
 
@@ -108,12 +109,14 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
 
     @Override
     public void sendMessage(final String message) {
-        this.channel.ifPresent(c -> c.writeAndFlush(this.buildMessage(message)));
+        Optional.ofNullable(this.channel)
+                .ifPresent(c -> c.writeAndFlush(this.buildMessage(message)));
     }
 
     @Override
     public void disconnect() {
-        this.channel.ifPresent(Channel::disconnect);
+        Optional.ofNullable(this.channel)
+                .ifPresent(Channel::disconnect);
     }
 
     protected abstract T buildMessage(String message);
