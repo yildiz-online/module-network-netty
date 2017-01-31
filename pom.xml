@@ -29,7 +29,7 @@
   <url>https://bitbucket.org/yildiz-engine-team/module-network-netty</url>
 
   <artifactId>module-network-netty</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.2</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2014</inceptionYear>
@@ -41,27 +41,8 @@
   <parent>
     <groupId>be.yildiz-games</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.9</version>
   </parent>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>be.yildiz-games</groupId>
-        <artifactId>bom-junit</artifactId>
-        <version>${version.bom-junit}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>be.yildiz-games</groupId>
-        <artifactId>bom-netty</artifactId>
-        <version>${version.bom-netty}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -79,10 +60,12 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   
