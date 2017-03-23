@@ -41,7 +41,6 @@ abstract class NettySession extends Session {
     /**
      * Channel used for data transmission.
      */
-    @Getter
     private final Channel channel;
 
     /**
@@ -72,5 +71,9 @@ abstract class NettySession extends Session {
     @Override
     protected void closeSession() {
         this.channel.close();
+    }
+
+    public Channel getChannel() {
+        return channel;
     }
 }

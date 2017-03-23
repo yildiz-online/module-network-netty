@@ -30,7 +30,6 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
-import lombok.Getter;
 
 import java.net.InetSocketAddress;
 
@@ -44,13 +43,11 @@ public final class ServerNetty implements Server {
     /**
      * Port to expose to clients.
      */
-    @Getter
     private final int port;
 
     /**
      * Address to expose to clients.
      */
-    @Getter
     private final String address;
 
     /**
@@ -132,5 +129,13 @@ public final class ServerNetty implements Server {
             Thread.currentThread().interrupt();
             throw new NetworkException("Error starting network engine.", e);
         }
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }
