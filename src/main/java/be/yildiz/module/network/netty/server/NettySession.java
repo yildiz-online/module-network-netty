@@ -27,7 +27,6 @@ import be.yildiz.common.id.PlayerId;
 import be.yildiz.module.network.protocol.ServerResponse;
 import be.yildiz.module.network.server.Session;
 import io.netty.channel.Channel;
-import lombok.Getter;
 
 import java.util.Set;
 
