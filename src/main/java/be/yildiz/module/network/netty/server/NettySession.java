@@ -55,6 +55,11 @@ abstract class NettySession extends Session {
         this.write(this.channel, message);
     }
 
+    /**
+     * Write directly on the socket.
+     * @param ch Channel to write on.
+     * @param message Message to write.
+     */
     protected abstract void write(final Channel ch, final String message);
 
     @Override
