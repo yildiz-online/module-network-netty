@@ -24,11 +24,8 @@
 package be.yildiz.module.network.netty.server;
 
 import be.yildiz.common.id.PlayerId;
-import be.yildiz.module.network.protocol.ServerResponse;
 import be.yildiz.module.network.server.Session;
 import io.netty.channel.Channel;
-
-import java.util.Set;
 
 /**
  * Netty implementation for a session.
@@ -54,15 +51,8 @@ abstract class NettySession extends Session {
     }
 
     @Override
-    public void sendMessage(final ServerResponse message) {
-        this.write(this.channel, message.buildMessage());
-    }
-
-    @Override
-    public void sendMessage(final Set<ServerResponse> messageList) {
-        StringBuilder sb = new StringBuilder();
-        messageList.forEach(r -> sb.append(r.buildMessage()));
-        this.write(this.channel, sb.toString());
+    public  final void sendMessage(String message) {
+        this.write(this.channel, message);
     }
 
     protected abstract void write(final Channel ch, final String message);
