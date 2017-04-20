@@ -30,7 +30,6 @@ import be.yildiz.module.network.netty.client.ClientNetty;
 import be.yildiz.module.network.netty.client.SimpleClientHandlerFactory;
 import be.yildiz.module.network.netty.client.SimpleClientNetty;
 import be.yildiz.module.network.netty.client.WebSocketClientNetty;
-import be.yildiz.module.network.netty.server.HttpStaticFileServerHandlerFactory;
 import be.yildiz.module.network.netty.server.ServerNetty;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -40,8 +39,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-
-import java.util.List;
 
 /**
  * Create server or client Netty implementations.
@@ -110,16 +107,4 @@ public interface NettyFactory {
 
         return ServerNetty.fromAddress(bs, address, port);
     }
-
-    /**
-     * Create a new http server for Netty.
-     *
-     * @param port           Port number.
-     * @param forbiddenFiles Resources not allowed to be delivered.
-     * @return A server implementation.
-     */
-    static ServerNetty createHttpServerNetty(final int port, final List<String> forbiddenFiles) {
-        return createServerNetty(port, new HttpStaticFileServerHandlerFactory(forbiddenFiles));
-    }
-
 }
