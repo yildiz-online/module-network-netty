@@ -79,6 +79,7 @@ public final class ServerNetty implements Server {
      * @param bootstrap Netty server bootstrap to use.
      * @param address   Address to expose to clients.
      * @param port      Port to expose to clients.
+     * @return The created server.
      */
     //@requires bootstrap != null.
     //@requires address != null.
@@ -92,6 +93,7 @@ public final class ServerNetty implements Server {
      *
      * @param bootstrap Netty server bootstrap to use.
      * @param port      Port to expose to clients.
+     * @return The created server.
      */
     // @requires bootstrap != null.
     //@requires port > 0 < 65535.
