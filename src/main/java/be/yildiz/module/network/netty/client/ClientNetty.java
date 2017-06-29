@@ -26,7 +26,6 @@ package be.yildiz.module.network.netty.client;
 import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.AbstractNetworkEngineClient;
 import be.yildiz.module.network.netty.DecoderEncoder;
-import be.yildiz.module.network.protocol.ServerRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
