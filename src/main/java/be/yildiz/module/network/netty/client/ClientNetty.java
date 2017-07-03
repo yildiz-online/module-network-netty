@@ -26,6 +26,7 @@ package be.yildiz.module.network.netty.client;
 import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.AbstractNetworkEngineClient;
 import be.yildiz.module.network.netty.DecoderEncoder;
+import be.yildiz.module.network.protocol.NetworkMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -102,7 +103,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
     }
 
     @Override
-    public void sendMessage(final ServerRequest message) {
+    public void sendMessage(final NetworkMessage message) {
         this.sendMessage(message.buildMessage());
     }
 
