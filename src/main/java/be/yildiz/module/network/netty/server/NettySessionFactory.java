@@ -24,7 +24,6 @@
 package be.yildiz.module.network.netty.server;
 
 import be.yildiz.common.id.PlayerId;
-import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.server.Session;
 import io.netty.channel.Channel;
 
@@ -40,7 +39,7 @@ public class NettySessionFactory {
      * @param channel Associated Netty channel.
      * @return The created session.
      */
-    static Session createText(final PlayerId player, final Channel channel, DecoderEncoder codec) {
+    static Session createText(final PlayerId player, final Channel channel) {
         return new TextNettySession(player, channel);
     }
 
