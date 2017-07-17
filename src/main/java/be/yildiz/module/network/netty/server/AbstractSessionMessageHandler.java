@@ -39,12 +39,13 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
 
     private Session session;
 
-    public AbstractSessionMessageHandler(final AbstractHandler handler) {
+    protected AbstractSessionMessageHandler(final AbstractHandler handler) {
         super();
         this.handler = handler;
     }
 
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
+    @Override
+    public final void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
         this.getSession().ifPresent(Session::disconnect);
     }
 
@@ -55,7 +56,7 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
         return Optional.ofNullable(this.session);
     }
 
-    protected void setSession(Session session) {
+    protected final void setSession(Session session) {
         this.session = session;
     }
 }
