@@ -75,7 +75,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
     }
 
     @Override
-    public void connect(final String address, final int port) {
+    public void connectImpl(final String address, final int port) {
         Logger.info("Connecting to server " + address + " : " + port);
 
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
