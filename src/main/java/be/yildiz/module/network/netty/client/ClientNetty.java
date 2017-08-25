@@ -84,7 +84,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
         if (!future.awaitUninterruptibly().isSuccess()) {
             this.connectionFailed();
-            this.bootstrap.group().shutdownGracefully();
+            this.bootstrap.config().group().shutdownGracefully();
         } else {
             this.channel = future.channel();
             this.connectionComplete();
@@ -102,7 +102,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
                     this.connectionLost();
                 });
         this.channel = null;
-        this.bootstrap.group().shutdownGracefully();
+        this.bootstrap.config().group().shutdownGracefully();
     }
 
     @Override
