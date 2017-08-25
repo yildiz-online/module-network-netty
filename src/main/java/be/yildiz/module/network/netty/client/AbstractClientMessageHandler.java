@@ -24,12 +24,12 @@
 package be.yildiz.module.network.netty.client;
 
 import be.yildiz.common.collections.Lists;
-import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.ClientCallBack;
 import be.yildiz.module.network.protocol.MessageSeparation;
 import be.yildiz.module.network.protocol.MessageWrapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -37,6 +37,8 @@ import java.util.List;
  * @author Grégory Van den Borre
  */
 public abstract class AbstractClientMessageHandler <T> extends SimpleChannelInboundHandler<T> {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AbstractClientMessageHandler.class);
 
     private static final int BUFFER_SIZE = 1024;
     /**
@@ -55,12 +57,12 @@ public abstract class AbstractClientMessageHandler <T> extends SimpleChannelInbo
     public final void channelInactive(final ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
         this.callBack.connectionFailed();
-        Logger.info("Netty channel closed: " + ctx.channel());
+        LOGGER.info("Netty channel closed: " + ctx.channel());
     }
 
     @Override
     public final void exceptionCaught(final ChannelHandlerContext ctx, final Throwable e) {
-        Logger.error(e);
+        LOGGER.error("Exception", e);
         ctx.channel().close();
         callBack.connectionLost();
     }

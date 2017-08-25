@@ -23,7 +23,6 @@
 
 package be.yildiz.module.network.netty.client;
 
-import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.client.AbstractNetworkEngineClient;
 import be.yildiz.module.network.netty.DecoderEncoder;
 import be.yildiz.module.network.protocol.NetworkMessage;
@@ -31,6 +30,8 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Optional;
@@ -41,6 +42,8 @@ import java.util.Optional;
  * @author Grégory Van den Borre
  */
 public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientNetty.class);
 
     /**
      * Netty bootstrap object.
@@ -59,9 +62,9 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
      */
     public ClientNetty(final Bootstrap clientBootstrap) {
         super();
-        Logger.info("Initializing Netty network client engine...");
+        LOGGER.info("Initializing Netty network client engine...");
         this.bootstrap = clientBootstrap;
-        Logger.info("Netty network engine client initialized.");
+        LOGGER.info("Netty network engine client initialized.");
 
     }
 
@@ -76,7 +79,7 @@ public abstract class ClientNetty<T> extends AbstractNetworkEngineClient {
 
     @Override
     public void connectImpl(final String address, final int port) {
-        Logger.info("Connecting to server " + address + " : " + port);
+        LOGGER.info("Connecting to server " + address + " : " + port);
 
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
         if (!future.awaitUninterruptibly().isSuccess()) {

@@ -23,13 +23,14 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.common.log.Logger;
 import be.yildiz.module.network.exceptions.NetworkException;
 import be.yildiz.module.network.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
@@ -39,6 +40,8 @@ import java.net.InetSocketAddress;
  * @author Grégory Van den Borre
  */
 public final class ServerNetty implements Server {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerNetty.class);
 
     /**
      * Port to expose to clients.
@@ -119,11 +122,11 @@ public final class ServerNetty implements Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                Logger.debug("server bound to :" + this.port);
-                Logger.info("Server started.");
+                LOGGER.debug("server bound to :" + this.port);
+                LOGGER.info("Server started.");
             } else {
-                Logger.warning("server not bound to :" + this.port);
-                Logger.info("Server not started.");
+                LOGGER.warn("server not bound to :" + this.port);
+                LOGGER.info("Server not started.");
             }
         } catch (ChannelException e) {
             throw new NetworkException("Port " + this.port + " already in use.", e);
