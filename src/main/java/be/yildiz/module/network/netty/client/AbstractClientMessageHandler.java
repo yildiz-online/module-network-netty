@@ -23,10 +23,10 @@
 
 package be.yildiz.module.network.netty.client;
 
-import be.yildiz.common.collections.Lists;
 import be.yildiz.module.network.client.ClientCallBack;
 import be.yildiz.module.network.protocol.MessageSeparation;
 import be.yildiz.module.network.protocol.MessageWrapper;
+import be.yildizgames.common.collection.Lists;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.LoggerFactory;
