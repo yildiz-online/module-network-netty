@@ -36,12 +36,12 @@ public final class SessionMessageHandler extends AbstractSessionMessageHandler<S
     }
 
     @Override
-    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(final ChannelHandlerContext ctx) {
         this.setSession(NettySessionFactory.createAnonymousText(ctx.channel()));
     }
 
     @Override
-    public void channelRead0(final ChannelHandlerContext ctx, final String message) throws Exception {
+    public void channelRead0(final ChannelHandlerContext ctx, final String message) {
         this.getSession().ifPresent(s -> this.handler.processMessages(s, message));
     }
 }
