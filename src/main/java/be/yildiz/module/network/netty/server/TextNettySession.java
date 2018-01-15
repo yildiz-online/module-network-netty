@@ -23,7 +23,7 @@
 
 package be.yildiz.module.network.netty.server;
 
-import be.yildiz.common.id.PlayerId;
+import be.yildizgames.common.model.PlayerId;
 import io.netty.channel.Channel;
 
 /**

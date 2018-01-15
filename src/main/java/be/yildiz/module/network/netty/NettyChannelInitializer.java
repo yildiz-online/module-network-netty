@@ -23,7 +23,6 @@
 
 package be.yildiz.module.network.netty;
 
-import be.yildiz.common.exeption.UnhandledSwitchCaseException;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -86,7 +85,7 @@ public final class NettyChannelInitializer extends ChannelInitializer<SocketChan
                 }
                 break;
             default:
-                throw new UnhandledSwitchCaseException(factory.getCodec());
+                throw new IllegalArgumentException("Unknown codec: " + factory.getCodec());
         }
         pipeline.addLast("handler", this.factory.create());
     }
