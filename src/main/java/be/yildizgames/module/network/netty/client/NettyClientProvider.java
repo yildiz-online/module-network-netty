@@ -22,13 +22,18 @@
  *
  */
 
-module be.yildizgames.module.network.netty {
+package be.yildizgames.module.network.netty.client;
 
-    requires be.yildizgames.module.network;
-    requires be.yildizgames.common.logging;
-    requires be.yildizgames.common.model;
-    requires io.netty.all;
+import be.yildizgames.module.network.client.Client;
+import be.yildizgames.module.network.client.ClientProvider;
+import be.yildizgames.module.network.netty.factory.NettyFactory;
 
-    exports be.yildizgames.module.network.netty.factory;
-
+/**
+ * @author Grégory Van den Borre
+ */
+public class NettyClientProvider implements ClientProvider {
+    @Override
+    public Client getEngine() {
+        return NettyFactory.createClientNetty();
+    }
 }

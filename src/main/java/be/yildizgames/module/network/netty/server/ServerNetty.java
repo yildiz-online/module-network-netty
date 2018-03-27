@@ -24,7 +24,6 @@
 
 package be.yildizgames.module.network.netty.server;
 
-import be.yildiz.module.network.exceptions.NetworkException;
 import be.yildizgames.common.logging.LogFactory;
 import be.yildizgames.module.network.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
@@ -40,7 +39,7 @@ import java.net.InetSocketAddress;
  *
  * @author Grégory Van den Borre
  */
-public final class ServerNetty implements Server {
+public final class ServerNetty extends Server {
 
     private static final Logger LOGGER = LogFactory.getInstance().getLogger(ServerNetty.class);
 
@@ -109,8 +108,6 @@ public final class ServerNetty implements Server {
 
     /**
      * Start the server to listen to clients.
-     *
-     * @throws NetworkException If the server failed to start(port already used...).
      */
     //@ensures To start the server and having the port listening to clients.
     public void startServer() {
@@ -130,10 +127,10 @@ public final class ServerNetty implements Server {
                 LOGGER.info("Server not started.");
             }
         } catch (ChannelException e) {
-            throw new NetworkException("Port " + this.port + " already in use.", e);
+            this.throwError("Port " + this.port + " already in use.", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new NetworkException("Error starting network engine.", e);
+            this.throwError("Error starting network engine.", e);
         }
     }
 

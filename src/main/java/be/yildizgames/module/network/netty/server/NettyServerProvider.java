@@ -22,13 +22,17 @@
  *
  */
 
-module be.yildizgames.module.network.netty {
+package be.yildizgames.module.network.netty.server;
 
-    requires be.yildizgames.module.network;
-    requires be.yildizgames.common.logging;
-    requires be.yildizgames.common.model;
-    requires io.netty.all;
+import be.yildizgames.module.network.server.Server;
+import be.yildizgames.module.network.server.ServerProvider;
 
-    exports be.yildizgames.module.network.netty.factory;
+/**
+ * @author Grégory Van den Borre
+ */
+public class NettyServerProvider implements ServerProvider {
 
+    public final Server getEngine() {
+        throw new UnsupportedOperationException("Currently only client is supported");
+    }
 }

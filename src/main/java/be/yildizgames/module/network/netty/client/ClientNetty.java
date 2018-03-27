@@ -25,7 +25,6 @@
 package be.yildizgames.module.network.netty.client;
 
 import be.yildizgames.module.network.DecoderEncoder;
-import be.yildizgames.module.network.client.AbstractNetworkEngineClient;
 import be.yildizgames.module.network.client.Client;
 import be.yildizgames.module.network.protocol.NetworkMessage;
 import io.netty.bootstrap.Bootstrap;
@@ -43,7 +42,7 @@ import java.util.Optional;
  *
  * @author Grégory Van den Borre
  */
-public abstract class ClientNetty<T> extends AbstractNetworkEngineClient implements Client {
+public abstract class ClientNetty<T> extends Client {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientNetty.class);
 
