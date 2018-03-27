@@ -33,6 +33,6 @@ import be.yildizgames.module.network.server.ServerProvider;
 public class NettyServerProvider implements ServerProvider {
 
     public final Server getEngine() {
-        throw new UnsupportedOperationException("Currently only client is supported");
+        throw new UnsupportedOperationException("Currently only client is supported, use netty factory instead.");
     }
 }
