@@ -25,14 +25,23 @@
 package be.yildizgames.module.network.netty.server;
 
 import be.yildizgames.common.logging.LogFactory;
+import be.yildizgames.module.network.DecoderEncoder;
+import be.yildizgames.module.network.netty.HandlerFactory;
+import be.yildizgames.module.network.netty.NettyChannelInitializer;
 import be.yildizgames.module.network.server.Server;
+import be.yildizgames.module.network.server.SessionManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
 
 /**
  * Server side part of the Netty network system, wrap the netty bootstrap and offer possibility to add handlers.
@@ -61,17 +70,23 @@ public final class ServerNetty extends Server {
     /**
      * Create a new Netty server.
      *
-     * @param bootstrap Netty server bootstrap to use.
      * @param address   Address to expose to clients.
      * @param port      Port to expose to clients.
      */
     //@requires bootstrap != null.
     //@requires port > 0 < 65535.
-    private ServerNetty(final ServerBootstrap bootstrap, final String address, final int port) {
+    private ServerNetty(final String address, final int port, SessionManager sessionManager, DecoderEncoder codec) {
         super();
+        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(new SessionServerHandlerFactory(sessionManager, codec));
+
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        this.bootstrap = new ServerBootstrap()
+                .group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(initializer);
         this.address = address;
         this.port = port;
-        this.bootstrap = bootstrap;
         this.bootstrap.option(ChannelOption.TCP_NODELAY, true);
         this.bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
     }
@@ -79,7 +94,6 @@ public final class ServerNetty extends Server {
     /**
      * Create a new Netty server.
      *
-     * @param bootstrap Netty server bootstrap to use.
      * @param address   Address to expose to clients.
      * @param port      Port to expose to clients.
      * @return The created server.
@@ -87,22 +101,21 @@ public final class ServerNetty extends Server {
     //@requires bootstrap != null.
     //@requires address != null.
     //@requires port > 0 < 65535.
-    public static ServerNetty fromAddress(final ServerBootstrap bootstrap, final String address, final int port) {
-        return new ServerNetty(bootstrap, address, port);
+    public static ServerNetty webSocket(final String address, final int port, SessionManager sessionManager) {
+        return new ServerNetty(faddress, port, sessionManager, DecoderEncoder.WEBSOCKET);
     }
 
     /**
      * Create a new Netty server.
      *
-     * @param bootstrap Netty server bootstrap to use.
      * @param port      Port to expose to clients.
      * @return The created server.
      */
     // @requires bootstrap != null.
     //@requires port > 0 < 65535.
     //@effects Create a new instance of the Netty server.
-    public static ServerNetty fromPort(final ServerBootstrap bootstrap, final int port) {
-        return new ServerNetty(bootstrap, null, port);
+    public static ServerNetty fromPort(final HandlerFactory factory, final int port) {
+        return new ServerNetty(factory,null, port);
     }
 
 

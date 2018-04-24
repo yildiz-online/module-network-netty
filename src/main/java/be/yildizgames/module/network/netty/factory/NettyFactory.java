@@ -33,14 +33,9 @@ import be.yildizgames.module.network.netty.client.SimpleClientHandlerFactory;
 import be.yildizgames.module.network.netty.client.SimpleClientNetty;
 import be.yildizgames.module.network.netty.client.WebSocketClientNetty;
 import be.yildizgames.module.network.netty.server.ServerNetty;
-import be.yildizgames.module.network.server.Server;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
@@ -83,14 +78,8 @@ public interface NettyFactory {
      * @param factory Factory to create logic handlers.
      * @return A server implementation.
      */
-    static Server createServerNetty(final int port, final HandlerFactory factory) {
-        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(factory);
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        ServerBootstrap bs = new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
-
-        return ServerNetty.fromPort(bs, port);
+    static ServerNetty createServerNetty(final int port, final HandlerFactory factory) {
+        return ServerNetty.fromPort(factory, port);
     }
 
     /**
@@ -101,13 +90,7 @@ public interface NettyFactory {
      * @param factory Factory to create logic handlers.
      * @return A server implementation.
      */
-    static Server createServerNetty(final String address, final int port, HandlerFactory factory) {
-        ChannelInitializer<SocketChannel> initializer = new NettyChannelInitializer(factory);
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        ServerBootstrap bs = new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
-
-        return ServerNetty.fromAddress(bs, address, port);
+    static ServerNetty createServerNetty(final String address, final int port, HandlerFactory factory) {
+        return ServerNetty.fromAddress(factory, address, port);
     }
 }

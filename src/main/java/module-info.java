@@ -28,6 +28,7 @@ module be.yildizgames.module.network.netty {
     requires be.yildizgames.common.logging;
     requires be.yildizgames.common.model;
     requires io.netty.all;
+    requires slf4j.api;
 
     exports be.yildizgames.module.network.netty.factory;
 
