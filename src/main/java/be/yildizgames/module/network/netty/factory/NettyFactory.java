@@ -26,13 +26,13 @@ package be.yildizgames.module.network.netty.factory;
 
 import be.yildizgames.module.network.DecoderEncoder;
 import be.yildizgames.module.network.client.Client;
-import be.yildizgames.module.network.netty.HandlerFactory;
 import be.yildizgames.module.network.netty.NettyChannelInitializer;
 import be.yildizgames.module.network.netty.client.ClientNetty;
 import be.yildizgames.module.network.netty.client.SimpleClientHandlerFactory;
 import be.yildizgames.module.network.netty.client.SimpleClientNetty;
 import be.yildizgames.module.network.netty.client.WebSocketClientNetty;
 import be.yildizgames.module.network.netty.server.ServerNetty;
+import be.yildizgames.module.network.server.Server;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -74,23 +74,9 @@ public interface NettyFactory {
     /**
      * Create a new server for Netty.
      *
-     * @param port    Port number.
-     * @param factory Factory to create logic handlers.
      * @return A server implementation.
      */
-    static ServerNetty createServerNetty(final int port, final HandlerFactory factory) {
-        return ServerNetty.fromPort(factory, port);
-    }
-
-    /**
-     * Create a new server for Netty.
-     *
-     * @param address Address where the socket will be created(can be null).
-     * @param port    Port number.
-     * @param factory Factory to create logic handlers.
-     * @return A server implementation.
-     */
-    static ServerNetty createServerNetty(final String address, final int port, HandlerFactory factory) {
-        return ServerNetty.fromAddress(factory, address, port);
+    static Server createServerNetty() {
+        return ServerNetty.create();
     }
 }

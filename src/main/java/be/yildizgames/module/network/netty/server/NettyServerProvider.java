@@ -24,6 +24,7 @@
 
 package be.yildizgames.module.network.netty.server;
 
+import be.yildizgames.module.network.netty.factory.NettyFactory;
 import be.yildizgames.module.network.server.Server;
 import be.yildizgames.module.network.server.ServerProvider;
 
@@ -33,6 +34,6 @@ import be.yildizgames.module.network.server.ServerProvider;
 public class NettyServerProvider implements ServerProvider {
 
     public final Server getEngine() {
-        throw new UnsupportedOperationException("Currently only client is supported, use netty factory instead.");
+        return NettyFactory.createServerNetty();
     }
 }
