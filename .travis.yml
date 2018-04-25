@@ -1,21 +1,13 @@
-env:
-  global:
-    - secure: "ZYIa8zP4EA9I/H5pybOqdYa2cjVVN6tiLD4ryAFGECEo2HT2bo3wx9ZN6KNqR4REq5F0c0xnd6W6ZZOQ7Bf/MxxCnlw/K1QKnW2bgl3lypoIB6Nh0v95LMpLmd09D6CwUfVw1hah+x2PPfc1VaXHo/HQa0XOhjbmTHl15Q5udzZ+HHwckjyNLmpAYEOCtp3nJiV09SRiejHFisMmMUbEtvwbn7E1vQyyGhTNWsV+LaBKc7i7lzJ/T+0lz4P08g3xATdsDSuqWa24GCYDPUTsJ4/RhY1jWwNUFJUv9xj4Y2sL/BW9L9Y0Fq3vi3ERsx9tS6clPnYprNX+sLc/x1icwJIL3B5onCn7lC7gQe9AcEBVVBUHVmeiA5BECD+OHETxd0AG/3blKLdUn4PUGuKSWWVbQc6tiN8pLhk9/1xldgSUsem1Sjr85jmvE5wIooopVDyj1pKu6ClmHqeRVZeHm46AcqFcUsd1okRR8S5h/hfYPgjo5am3G5r3muygCgskmk0ip0dIB0lFVMo4bof7b6zh+0HUAWZ6efIQlMJB7B0p6ixVUORZGhi0R6xbxiPyFPNMXnvlaXhL8j4S7zHyfF9p7jCkQuV4aa9hWn9cfnXUyMzeXThMRmnQQuzFPa7Tzhz4MUeON8DGvMzzWhV/Jcey9IPSzjidVQfOc8xOyPU="
-
-
 language: java
-jdk:
-  - oraclejdk9
 
-addons:
-  coverity_scan:
-    project:
-      name: "yildiz-online/module-network-netty"
-      description: "Build submitted via Travis CI"
-    notification_email: vandenborre.gregory@hotmail.fr
-    build_command_prepend: "mvn clean"
-    build_command:   "mvn -DskipTests=true compile -s settings.xml"
-    branch_pattern: master
+before_install:
+  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/openjdk_linux-x64.tar.gz
+  - tar -xzf openjdk_linux-x64.tar.gz
+  - wget https://bitbucket.org/yildiz-engine-team/build-application-binaries/downloads/apache-maven.zip
+  - unzip -qq apache-maven.zip
+  - export M2_HOME=$PWD/apache-maven
+  - export JAVA_HOME=$PWD/openjdk_linux-x64
+  - export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
 script:
   - mvn -V -B -s settings.xml test

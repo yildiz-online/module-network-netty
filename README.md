@@ -11,7 +11,7 @@ The netty module is an implementation of the module-network, based on Netty-IO.
 
 ## Requirements
 
-To build this module, you will need a java 9 JDK and Maven 3.
+To build this module, you will need the latest java JDK and Maven.
 
 ## Coding Style and other information
 
@@ -50,7 +50,7 @@ In your maven project, add the dependency
 <dependency>
     <groupId>be.yildiz-games</groupId>
     <artifactId>module-network-netty</artifactId>
-    <version>1.0.6</version>
+    <version>LATEST</version>
 </dependency>
 ```
 
