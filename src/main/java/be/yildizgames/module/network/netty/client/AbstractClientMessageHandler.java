@@ -58,7 +58,7 @@ public abstract class AbstractClientMessageHandler <T> extends SimpleChannelInbo
     public final void channelInactive(final ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
         this.callBack.connectionFailed();
-        LOGGER.info("Netty channel closed: " + ctx.channel());
+        LOGGER.info("Netty channel closed: {}", ctx.channel());
     }
 
     @Override

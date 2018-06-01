@@ -85,11 +85,11 @@ class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> 
         Channel ch = ctx.channel();
         if (!handshaker.isHandshakeComplete()) {
             if(!(received instanceof FullHttpResponse)) {
-                LOGGER.warn("Receiving message before handshake complete." + received);
+                LOGGER.warn("Receiving message before handshake complete: {}", received);
                 return;
             }
             FullHttpResponse handshake = FullHttpResponse.class.cast(received);
-            LOGGER.debug("Handshake received:" + handshake);
+            LOGGER.debug("Handshake received: {}", handshake);
             handshaker.finishHandshake(ch, handshake);
             LOGGER.debug("Handshake complete.");
             handshakeFuture.setSuccess();
@@ -99,7 +99,7 @@ class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> 
 
         if (received instanceof TextWebSocketFrame) {
             String message = TextWebSocketFrame.class.cast(received).text();
-            LOGGER.debug("Textframe received:" + message);
+            LOGGER.debug("Textframe received: {}", message);
             this.handleMessage(message);
         } else if (received instanceof CloseWebSocketFrame) {
             ch.close();

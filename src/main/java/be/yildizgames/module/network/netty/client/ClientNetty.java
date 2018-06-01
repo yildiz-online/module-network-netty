@@ -80,8 +80,7 @@ public abstract class ClientNetty<T> extends Client {
 
     @Override
     public void connectImpl(final String address, final int port) {
-        LOGGER.info("Connecting to server " + address + " : " + port);
-
+        LOGGER.info("Connecting to server {}:{}", address, port);
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
         if (!future.awaitUninterruptibly().isSuccess()) {
             this.connectionFailed();
