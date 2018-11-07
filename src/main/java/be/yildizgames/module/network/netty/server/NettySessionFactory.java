@@ -34,6 +34,13 @@ import io.netty.channel.Channel;
 class NettySessionFactory {
 
     /**
+     * Prevent to instantiate this class.
+     */
+    private NettySessionFactory() {
+        super();
+    }
+
+    /**
      * Create a new session associated to a player.
      *
      * @param player  Id of the logged player.

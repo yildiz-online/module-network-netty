@@ -46,6 +46,7 @@ public class WebSocketClientNetty extends ClientNetty<TextWebSocketFrame> {
 
     @Override
     protected void connectionComplete() {
+        // For a web socket, an addition step is necessary, handshake.
     }
 
     @Override

@@ -115,10 +115,10 @@ public final class ServerNetty extends Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                LOGGER.debug("server bound to :" + port);
+                LOGGER.debug("server bound to {}:", port);
                 LOGGER.info("Server started.");
             } else {
-                LOGGER.warn("server not bound to :" + port);
+                LOGGER.warn("server not bound to {}:", port);
                 LOGGER.info("Server not started.");
             }
         } catch (ChannelException e) {
