@@ -1,13 +1,15 @@
 sudo: required
 
+language: generic
+
 git:
   depth: false
 
 services:
-- docker
+  - docker
 
 before_install:
-- docker pull moussavdb/build-java
+  - docker pull moussavdb/build-java
 
 script:
-- docker run -v $PWD:/src -w /src moussavdb/build-java mvn -V -s settings.xml org.jacoco:jacoco-maven-plugin:prepare-agent clean install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.login=$SONAR
+  - docker run -v $PWD:/src -w /src moussavdb/build-java mvn -V -s settings.xml org.jacoco:jacoco-maven-plugin:prepare-agent clean install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.login=$SONAR
