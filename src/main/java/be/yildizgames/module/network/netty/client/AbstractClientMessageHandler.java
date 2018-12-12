@@ -24,12 +24,12 @@
 
 package be.yildizgames.module.network.netty.client;
 
+import be.yildizgames.common.logging.LogFactory;
 import be.yildizgames.module.network.client.ClientCallBack;
 import be.yildizgames.module.network.protocol.MessageSeparation;
 import be.yildizgames.module.network.protocol.MessageWrapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public abstract class AbstractClientMessageHandler <T> extends SimpleChannelInboundHandler<T> {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AbstractClientMessageHandler.class);
+    private static final org.slf4j.Logger LOGGER = LogFactory.getInstance().getLogger(AbstractClientMessageHandler.class);
 
     private static final int BUFFER_SIZE = 1024;
     /**
