@@ -24,7 +24,6 @@
 
 package be.yildizgames.module.network.netty.server;
 
-import be.yildizgames.common.logging.LogFactory;
 import be.yildizgames.module.network.DecoderEncoder;
 import be.yildizgames.module.network.netty.NettyChannelInitializer;
 import be.yildizgames.module.network.server.Server;
@@ -39,6 +38,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
@@ -49,7 +49,7 @@ import java.net.InetSocketAddress;
  */
 public final class ServerNetty extends Server {
 
-    private static final Logger LOGGER = LogFactory.getInstance().getLogger(ServerNetty.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerNetty.class);
 
     /**
      * Netty server bootstrap.

@@ -24,7 +24,6 @@
 
 package be.yildizgames.module.network.netty.client;
 
-import be.yildizgames.common.logging.LogFactory;
 import be.yildizgames.module.network.client.ClientCallBack;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -38,6 +37,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -48,7 +48,7 @@ import java.net.URISyntaxException;
  */
 class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> {
 
-    private static final Logger LOGGER = LogFactory.getInstance().getLogger(SimpleWebSocketClientHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleWebSocketClientHandler.class);
 
     private final ClientCallBack callBack;
 
