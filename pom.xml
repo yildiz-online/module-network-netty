@@ -22,15 +22,14 @@
   ~
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <name>Yildiz Module Network Netty</name>
   <description>Module containing the Netty implementation for network.</description>
   <url>https://bitbucket.org/yildiz-engine-team/module-network-netty</url>
 
   <artifactId>module-network-netty</artifactId>
-  <version>2.0.2-SNAPSHOT</version>
+  <version>2.0.3-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <inceptionYear>2014</inceptionYear>
