@@ -70,8 +70,6 @@ public final class ServerNetty extends Server {
         this.bootstrap = new ServerBootstrap()
                 .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class);
-        this.bootstrap.option(ChannelOption.TCP_NODELAY, true);
-        this.bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
     }
 
     /**
