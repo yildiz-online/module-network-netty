@@ -32,7 +32,6 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -58,13 +57,9 @@ public final class ServerNetty extends Server {
 
     /**
      * Create a new Netty server.
-     *
      */
-    //@requires bootstrap != null.
-    //@requires port > 0 < 65535.
     private ServerNetty() {
         super();
-
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         this.bootstrap = new ServerBootstrap()
@@ -113,11 +108,9 @@ public final class ServerNetty extends Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                LOGGER.debug("server bound to {}:", port);
-                LOGGER.info("Server started.");
+                LOGGER.info("Network server bound to {}.", port);
             } else {
-                LOGGER.warn("server not bound to {}:", port);
-                LOGGER.info("Server not started.");
+                LOGGER.warn("Network server binding to {} failure.", port);
             }
         } catch (ChannelException e) {
             this.throwError("Port " + port + " already in use.", e);
