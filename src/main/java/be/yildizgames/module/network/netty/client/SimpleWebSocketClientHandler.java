@@ -36,8 +36,6 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -48,7 +46,7 @@ import java.net.URISyntaxException;
  */
 class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleWebSocketClientHandler.class);
+    private static final System.Logger LOGGER = System.getLogger(SimpleWebSocketClientHandler.class.getName());
 
     private final ClientCallBack callBack;
 
@@ -85,13 +83,13 @@ class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> 
         Channel ch = ctx.channel();
         if (!handshaker.isHandshakeComplete()) {
             if(!(received instanceof FullHttpResponse)) {
-                LOGGER.warn("Receiving message before handshake complete: {}", received);
+                LOGGER.log(System.Logger.Level.WARNING,"Receiving message before handshake complete: {}", received);
                 return;
             }
             FullHttpResponse handshake = FullHttpResponse.class.cast(received);
-            LOGGER.debug("Handshake received: {}", handshake);
+            LOGGER.log(System.Logger.Level.DEBUG,"Handshake received: {}", handshake);
             handshaker.finishHandshake(ch, handshake);
-            LOGGER.debug("Handshake complete.");
+            LOGGER.log(System.Logger.Level.DEBUG,"Handshake complete.");
             handshakeFuture.setSuccess();
             this.callBack.handShakeComplete();
             return;
@@ -99,7 +97,7 @@ class SimpleWebSocketClientHandler extends AbstractClientMessageHandler<Object> 
 
         if (received instanceof TextWebSocketFrame) {
             String message = TextWebSocketFrame.class.cast(received).text();
-            LOGGER.debug("Textframe received: {}", message);
+            LOGGER.log(System.Logger.Level.DEBUG,"Textframe received: {}", message);
             this.handleMessage(message);
         } else if (received instanceof CloseWebSocketFrame) {
             ch.close();

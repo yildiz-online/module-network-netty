@@ -31,8 +31,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Optional;
@@ -44,7 +42,7 @@ import java.util.Optional;
  */
 public abstract class ClientNetty<T> extends Client {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientNetty.class);
+    private static final System.Logger LOGGER = System.getLogger(ClientNetty.class.getName());
 
     /**
      * Netty bootstrap object.
@@ -63,9 +61,9 @@ public abstract class ClientNetty<T> extends Client {
      */
     ClientNetty(final Bootstrap clientBootstrap) {
         super();
-        LOGGER.info("Initializing Netty network client engine...");
+        LOGGER.log(System.Logger.Level.INFO,"Initializing Netty network client engine...");
         this.bootstrap = clientBootstrap;
-        LOGGER.info("Netty network engine client initialized.");
+        LOGGER.log(System.Logger.Level.INFO,"Netty network engine client initialized.");
 
     }
 
@@ -80,7 +78,7 @@ public abstract class ClientNetty<T> extends Client {
 
     @Override
     public void connectImpl(final String address, final int port) {
-        LOGGER.info("Connecting to server {}:{}", address, port);
+        LOGGER.log(System.Logger.Level.INFO, "Connecting to server {}:{}", address, port);
         ChannelFuture future = this.bootstrap.connect(new InetSocketAddress(address, port));
         if (!future.awaitUninterruptibly().isSuccess()) {
             this.connectionFailed();

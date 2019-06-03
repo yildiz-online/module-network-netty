@@ -36,8 +36,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
@@ -48,7 +46,7 @@ import java.net.InetSocketAddress;
  */
 public final class ServerNetty extends Server {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServerNetty.class);
+    private static final System.Logger LOGGER = System.getLogger(ServerNetty.class.getName());
 
     /**
      * Netty server bootstrap.
@@ -108,9 +106,9 @@ public final class ServerNetty extends Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                LOGGER.info("Network server bound to {}.", port);
+                LOGGER.log(System.Logger.Level.INFO,"Network server bound to {}.", port);
             } else {
-                LOGGER.warn("Network server binding to {} failure.", port);
+                LOGGER.log(System.Logger.Level.WARNING,"Network server binding to {} failure.", port);
             }
         } catch (ChannelException e) {
             this.throwError("Port " + port + " already in use.", e);
