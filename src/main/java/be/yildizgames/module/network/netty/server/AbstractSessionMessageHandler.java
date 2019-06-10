@@ -40,6 +40,8 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
 
     private Session session;
 
+    private static final System.Logger LOGGER = System.getLogger(AbstractSessionMessageHandler.class.getName());
+
     protected AbstractSessionMessageHandler(final AbstractHandler handler) {
         super();
         this.handler = handler;
@@ -47,6 +49,7 @@ public abstract class AbstractSessionMessageHandler<T> extends SimpleChannelInbo
 
     @Override
     public final void exceptionCaught(ChannelHandlerContext ctx, Throwable e) {
+        LOGGER.log(System.Logger.Level.ERROR, e);
         this.getSession().ifPresent(Session::disconnect);
     }
 

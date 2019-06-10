@@ -106,7 +106,7 @@ public final class ServerNetty extends Server {
             }
             ChannelFuture acceptor = this.bootstrap.bind(socketAddress).sync();
             if (acceptor.isSuccess()) {
-                LOGGER.log(System.Logger.Level.INFO,"Network server bound to {}.", port);
+                LOGGER.log(System.Logger.Level.INFO,"Network server bound to " + port);
             } else {
                 LOGGER.log(System.Logger.Level.WARNING,"Network server binding to {} failure.", port);
             }
