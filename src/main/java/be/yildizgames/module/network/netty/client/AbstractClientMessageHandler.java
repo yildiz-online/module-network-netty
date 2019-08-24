@@ -90,7 +90,7 @@ public abstract class AbstractClientMessageHandler <T> extends SimpleChannelInbo
      * @param message Message to process.
      */
     private void processMessage(final String message) {
-        String messageWithoutStartChar = message.replaceAll(MessageSeparation.MESSAGE_BEGIN, "");
+        String messageWithoutStartChar = message.replace(MessageSeparation.MESSAGE_BEGIN, "");
         final String[] messages = messageWithoutStartChar.split(MessageSeparation.MESSAGE_END);
         for (final String c : messages) {
             MessageWrapper current = new MessageWrapper(c);
