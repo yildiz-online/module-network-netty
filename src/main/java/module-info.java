@@ -26,7 +26,11 @@ module be.yildizgames.module.network.netty {
 
     requires be.yildizgames.module.network;
     requires be.yildizgames.common.model;
-    requires io.netty.all;
+    requires io.netty.codec;
+    requires io.netty.codec.http;
+    requires io.netty.transport;
+    requires io.netty.handler;
+    requires io.netty.common;
 
     exports be.yildizgames.module.network.netty.factory;
 
